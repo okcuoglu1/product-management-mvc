@@ -2,8 +2,12 @@ package com.enoca.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -13,33 +17,28 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Customer {
+public class Customer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String firstName;
+
     private String lastName;
+
+    @Column(unique = true)
     private String email;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date registrationDate;
+    private LocalDateTime registrationDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date updatedDate;
+    private LocalDateTime updatedDate;
 
-    @PrePersist
-    protected void onCreate() {
-        registrationDate = new Date();
-    }
 
-    @PreUpdate
-    protected void onUpdate() {
-        updatedDate = new Date();
-    }
 
     @ManyToMany
     @JoinTable(

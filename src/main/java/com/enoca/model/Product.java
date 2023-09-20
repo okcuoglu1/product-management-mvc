@@ -21,18 +21,18 @@ public class Product implements Serializable {
     private Integer id;
 
     private String name;
-    private String description; // Ürün açıklaması
-    private double price; // Ürün fiyatı
-    private int stockQuantity; // Ürün stok miktarı
-    private String brand; // Ürün markası
-    private boolean isActive; // Ürünün etkinlik durumu (aktif veya pasif)
+    private String description;
+    private double price;
+    private int stockQuantity;
+    private String brand;
+    private boolean isActive;
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date createdAt; // Ürünün oluşturulma tarihi
+    private Date createdAt;
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date updatedAt; // Ürünün güncellendiği tarih
+    private Date updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
