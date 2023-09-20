@@ -2,15 +2,19 @@ package com.enoca.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -23,16 +27,16 @@ public class Product implements Serializable {
     private String name;
     private String description;
     private double price;
-    private int stockQuantity;
+    private int stock;
     private String brand;
-    private boolean isActive;
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date createdAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date updatedAt;
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -41,15 +45,7 @@ public class Product implements Serializable {
     @ManyToMany(mappedBy = "products")
     private List<Customer> customers;
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = new Date();
-    }
 
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = new Date();
-    }
 
 
 }

@@ -9,6 +9,8 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class CustomerResponse {
 
+    private Integer id;
+
     private String firstName;
 
     private String lastName;

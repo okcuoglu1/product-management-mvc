@@ -57,5 +57,12 @@ public class CustomerController {
     }
 
 
+    //todo customer a product ekleme
+//    @PostMapping("/createProduct")
+//    public ResponseMessage<?> createProductForCustomer(){
+//
+//    }
+
+
 
 }

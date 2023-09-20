@@ -3,7 +3,7 @@ package com.enoca.service;
 import com.enoca.exception.BadRequestException;
 import com.enoca.exception.NotFoundException;
 import com.enoca.model.Customer;
-import com.enoca.payload.dto.CustomerDTO;
+import com.enoca.payload.dtomapper.CustomerDtoMapper;
 import com.enoca.payload.request.CustomerRequest;
 import com.enoca.payload.response.CustomerResponse;
 import com.enoca.payload.response.ResponseMessage;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
-    private final CustomerDTO customerDTO;
+    private final CustomerDtoMapper customerDtoMapper;
 
     private final FieldControl fieldControl;
 
@@ -39,33 +39,20 @@ public class CustomerService {
         }
 
         //dto-pojo dnüsümü
-        Customer customer =  customerDTO.createCustomer(request);
+        Customer customer =  customerDtoMapper.createCustomer(request);
         Customer savedCustomer = customerRepository.save(customer);
 
         return ResponseMessage.<CustomerResponse>builder()
                 .message("Müşteri Kaydedildi.")
-                .object(createCustomerResponse(savedCustomer))
+                .object(customerDtoMapper.createCustomerResponse(savedCustomer))
                 .httpStatus(HttpStatus.CREATED)
                 .build();
 
 
     }
 
-    //getById
 
 
-    //pojo-dto
-    private CustomerResponse createCustomerResponse(Customer customer){
-
-    return CustomerResponse.builder().
-            firstName(customer.getFirstName()).
-            lastName(customer.getLastName()).
-            email(customer.getEmail())
-            .build();
-
-
-
-    }
 
     //!!! update
     public ResponseMessage<CustomerResponse> updateCustomer(Integer id, CustomerRequest request) {
@@ -75,17 +62,17 @@ public class CustomerService {
         Customer customer = customerRepository.findById(id).orElseThrow(()-> new NotFoundException(String.format(Messages.CUSTOMER_NOT_FOUND,id)));
 
 
-        fieldControl.checkDuplicate(request.getEmail());
+        fieldControl.checkDuplicateEmailForCustomer(request.getEmail());
 
 
-        Customer updatedCustomer = createUpdatedCustomer(request,id);
+        Customer updatedCustomer = customerDtoMapper.createUpdatedCustomerById(request,id);
 
         Customer savedCustomer = customerRepository.save(updatedCustomer);
 
 
         return ResponseMessage.<CustomerResponse>builder()
                 .message(String.format("%s ID 'li Müşteri Güncellendi.",id))
-                .object(createCustomerResponse(savedCustomer))
+                .object(customerDtoMapper.createCustomerResponse(savedCustomer))
                 .httpStatus(HttpStatus.OK)
                 .build();
 
@@ -97,20 +84,9 @@ public class CustomerService {
     }
 
 
-    //dto-pojo for update method
-
-    public Customer createUpdatedCustomer(CustomerRequest request, Integer id ){
-
-        return Customer.builder().
-                id(id).
-                firstName(request.getFirstName()).
-                lastName(request.getLastName()).
-                email(request.getEmail()).
-                build();
 
 
 
-    }
 
     //!!! DELETE
     public ResponseMessage<CustomerResponse> deleteCustomer(Integer id) {
@@ -122,7 +98,7 @@ public class CustomerService {
 
         return ResponseMessage.<CustomerResponse>builder()
                 .message(String.format("%s ID 'li müşteri Silindi.",id ))
-                .object(createCustomerResponse(customer))
+                .object(customerDtoMapper.createCustomerResponse(customer))
                 .build();
 
 
@@ -133,9 +109,9 @@ public class CustomerService {
 
         return ResponseMessage.<List<CustomerResponse>>builder()
                 .object(customerRepository.findAll()
-                .stream()
-                .map(this::createCustomerResponse)
-                .collect(Collectors.toList()))
+                         .stream()
+                         .map(customerDtoMapper::createCustomerResponse)
+                         .collect(Collectors.toList()))
                 .message("Tüm Müşteriler Getirildi.")
                 .httpStatus(HttpStatus.OK)
                 .build();
@@ -151,7 +127,7 @@ public class CustomerService {
 
 
         return ResponseMessage.<CustomerResponse>builder()
-                .object(createCustomerResponse(customer))
+                .object(customerDtoMapper.createCustomerResponse(customer))
                 .message(String.format("%s ID 'li Müşteri Getirildi.",id))
                 .httpStatus(HttpStatus.OK).build();
 
