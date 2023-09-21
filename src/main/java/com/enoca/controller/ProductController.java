@@ -23,19 +23,15 @@ public class ProductController {
     public ResponseMessage<ProductResponse> saveProduct(@RequestBody @Valid ProductRequest productRequest){
         return productService.saveProduct(productRequest);
     }
-
     //update
     @PutMapping("/update/{id}")
     public ResponseMessage<ProductResponse> updateProduct(@RequestBody @Valid ProductRequest productRequest, @PathVariable Integer id){
         return productService.updateProduct(productRequest,id);
     }
-
     //delete
     @DeleteMapping("/delete/{id}")
     public ResponseMessage<ProductResponse> deleteProduct(@PathVariable Integer id){
-
         return productService.deleteProduct(id);
-
 
     }
     //getAll
@@ -46,14 +42,10 @@ public class ProductController {
 
     }
 
-
     //getById
     @GetMapping("/getById/{id}")
     public ResponseMessage<ProductResponse> getById(@PathVariable Integer id){
 
         return productService.getById(id);
     }
-
-
-
 }

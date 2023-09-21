@@ -29,4 +29,16 @@ public class ProductDtoMapper {
                 .build();
     }
 
+    public Product createProductForUpdate(ProductRequest productRequest,Integer id){
+        return Product.builder()
+                .id(id)
+                .name(productRequest.getName())
+                .description(productRequest.getDescription())
+                .price(productRequest.getPrice())
+                .stock(productRequest.getStock())
+                .brand(productRequest.getBrand())
+                .build();
+    }
+
+
 }

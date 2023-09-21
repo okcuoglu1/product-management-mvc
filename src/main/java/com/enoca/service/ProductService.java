@@ -28,12 +28,11 @@ public class ProductService {
     //!!! save
     public ResponseMessage<ProductResponse> saveProduct(ProductRequest productRequest) {
 
-        System.out.println(productRequest);
-        Product product = productDtoMapper.createProduct(productRequest);
-        System.out.println(product);
-        Product savedProduct =  productRepository.save(product);
-        System.out.println(savedProduct);
 
+        fieldControl.checkDuplicateNameForProduct(productRequest.getName());
+
+        Product product = productDtoMapper.createProduct(productRequest);
+        Product savedProduct =  productRepository.save(product);
 
         return ResponseMessage.<ProductResponse>builder()
                 .object(productDtoMapper.createProductResponse(savedProduct))
@@ -52,12 +51,12 @@ public class ProductService {
 
          fieldControl.checkDuplicateNameForProduct(productRequest.getName());
 
-         Product updatedProduct = productDtoMapper.createProduct(productRequest);
+         Product updatedProduct = productDtoMapper.createProductForUpdate(productRequest,id);
 
          Product savedProduct = productRepository.save(updatedProduct);
 
          return ResponseMessage.<ProductResponse>builder()
-                 .message(String.format("%s ID 'li Ürün Güncellendi."))
+                 .message(String.format("%s ID 'li Ürün Güncellendi.",id))
                  .object(productDtoMapper.createProductResponse(savedProduct))
                  .httpStatus(HttpStatus.OK)
                  .build();
@@ -79,8 +78,6 @@ public class ProductService {
                 .object(productDtoMapper.createProductResponse(product))
                 .httpStatus(HttpStatus.OK)
                 .build();
-
-
     }
 
     //!!! GetALL
@@ -103,7 +100,7 @@ public class ProductService {
 
         return ResponseMessage.<ProductResponse>builder()
                 .object(productDtoMapper.createProductResponse(product))
-                .message(String.format("%s ID 'li Müşteri Getirildi."))
+                .message(String.format("%s ID 'li Müşteri Getirildi.",id))
                 .httpStatus(HttpStatus.OK)
                 .build();
 

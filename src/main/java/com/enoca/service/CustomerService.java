@@ -32,10 +32,9 @@ public class CustomerService {
     private final FieldControl fieldControl;
 
 
-    //not save
+    //SAVE
     public ResponseMessage<CustomerResponse> saveCustomer(CustomerRequest request) {
 
-        //dbde var mı yok mu kontrolü?
         boolean existCustomerInDB = customerRepository.existsByEmail(request.getEmail());
 
         if(existCustomerInDB){
@@ -43,7 +42,6 @@ public class CustomerService {
             throw new BadRequestException(String.format(Messages.ALREADY_REGISTER_MESSAGE_CUSTOMER,request.getEmail()));
         }
 
-        //dto-pojo dnüsümü
         Customer customer =  customerDtoMapper.createCustomer(request);
         Customer savedCustomer = customerRepository.save(customer);
 
@@ -62,18 +60,13 @@ public class CustomerService {
     //!!! update
     public ResponseMessage<CustomerResponse> updateCustomer(Integer id, CustomerRequest request) {
 
-
-
         Customer customer = customerRepository.findById(id).orElseThrow(()-> new NotFoundException(String.format(Messages.CUSTOMER_NOT_FOUND,id)));
 
-
         fieldControl.checkDuplicateEmailForCustomer(request.getEmail());
-
 
         Customer updatedCustomer = customerDtoMapper.createUpdatedCustomerById(request,id);
 
         Customer savedCustomer = customerRepository.save(updatedCustomer);
-
 
         return ResponseMessage.<CustomerResponse>builder()
                 .message(String.format("%s ID 'li Müşteri Güncellendi.",id))
@@ -95,8 +88,8 @@ public class CustomerService {
         return ResponseMessage.<CustomerResponse>builder()
                 .message(String.format("%s ID 'li müşteri Silindi.",id ))
                 .object(customerDtoMapper.createCustomerResponse(customer))
+                .httpStatus(HttpStatus.OK)
                 .build();
-
 
     }
 
@@ -140,10 +133,6 @@ public class CustomerService {
         Product product = productRepository.findById(request.getProductId()).orElseThrow(()->
                 new NotFoundException(String.format(Messages.PRODUCT_NOT_FOUND_LIST)));
 
-//        if (products.size() == 0) {
-//
-//            throw new NotFoundException(Messages.PRODUCT_NOT_FOUND_LIST);
-//        }
 
         customer.getProducts().add(product);
         Customer savedCustomer = customerRepository.save(customer);
