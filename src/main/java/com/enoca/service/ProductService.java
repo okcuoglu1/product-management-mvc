@@ -32,6 +32,7 @@ public class ProductService {
         Product product = productDtoMapper.createProduct(productRequest);
         System.out.println(product);
         Product savedProduct =  productRepository.save(product);
+        System.out.println(savedProduct);
 
 
         return ResponseMessage.<ProductResponse>builder()

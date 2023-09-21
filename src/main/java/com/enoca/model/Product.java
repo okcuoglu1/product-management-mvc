@@ -1,5 +1,6 @@
 package com.enoca.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -14,7 +15,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -38,10 +38,8 @@ public class Product implements Serializable {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDateTime updatedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "products")
     private List<Customer> customers;
 

@@ -1,9 +1,13 @@
 package com.enoca.payload.dtomapper;
 
 import com.enoca.model.Customer;
+import com.enoca.model.Product;
 import com.enoca.payload.request.CustomerRequest;
+import com.enoca.payload.response.CreateProductForCustomerResponse;
 import com.enoca.payload.response.CustomerResponse;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class CustomerDtoMapper {
@@ -38,12 +42,21 @@ public class CustomerDtoMapper {
 
         return CustomerResponse.builder()
                 .id(customer.getId())
-                .firstName(customer.getFirstName()).
-                lastName(customer.getLastName()).
-                email(customer.getEmail())
+                .firstName(customer.getFirstName())
+                .lastName(customer.getLastName())
+                .email(customer.getEmail())
+                .products(customer.getProducts())
                 .build();
 
     }
 
+    public CreateProductForCustomerResponse createProductForCustomer(Customer customer, Product product){
+
+        return CreateProductForCustomerResponse.builder()
+                .customer(customer)
+                .product(product)
+                .build();
+
+    }
 
 }

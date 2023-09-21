@@ -1,6 +1,6 @@
 package com.enoca.payload.response;
 
-import com.enoca.model.Category;
+
 import com.enoca.model.Customer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,9 @@
 package com.enoca.controller;
 
 import com.enoca.payload.request.CustomerRequest;
+import com.enoca.payload.request.ProductCustomerRequest;
+import com.enoca.payload.request.ProductRequest;
+import com.enoca.payload.response.CreateProductForCustomerResponse;
 import com.enoca.payload.response.CustomerResponse;
 import com.enoca.payload.response.ResponseMessage;
 import com.enoca.service.CustomerService;
@@ -57,11 +60,14 @@ public class CustomerController {
     }
 
 
-    //todo customer a product ekleme
-//    @PostMapping("/createProduct")
-//    public ResponseMessage<?> createProductForCustomer(){
-//
-//    }
+
+
+    @PostMapping("/createProduct")
+    public ResponseMessage<CreateProductForCustomerResponse> createProductForCustomer(@RequestBody @Valid ProductCustomerRequest request){
+
+        return customerService.createProductForCustomer(request);
+
+    }
 
 
 

@@ -9,6 +9,7 @@ public class Messages {
     public static final String CONFLICT_EMAIL = "Error : Email is already registered : %s";
 
     public static final String PRODUCT_NOT_FOUND = "Error : Product not found with id : %s";
+    public static final String PRODUCT_NOT_FOUND_LIST = "Error : Products not found";
 
     public static final String CONFLICT_NAME = "Error : Name is already registered : %s";
 

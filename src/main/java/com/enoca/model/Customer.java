@@ -1,5 +1,6 @@
 package com.enoca.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -40,6 +41,7 @@ public class Customer implements Serializable {
 
 
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "customer_product",
